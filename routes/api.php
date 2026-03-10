@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\Api\ContactController;
 use App\Http\Controllers\Api\DailyVerseController;
 use App\Http\Controllers\Api\DevotionalController;
 use App\Http\Controllers\Api\EventController;
@@ -37,5 +38,8 @@ Route::prefix('v1')->group(function () {
 
     //Team Members
     Route::get('/team', [\App\Http\Controllers\Api\TeamMemberController::class, 'index']);
+
+    // Contact
+    Route::post('/contact',           [ContactController::class, 'send']);
 
 });

@@ -35,6 +35,11 @@ class EventResource extends Resource
                             'other'      => 'Other',
                         ]),
 
+                    Forms\Components\TextInput::make('theme')
+                        ->placeholder('e.g. Walking in the Spirit')
+                        ->helperText('Optional theme or scripture focus for the event.')
+                        ->columnSpanFull(),
+
                     Forms\Components\DatePicker::make('date')
                         ->required(),
 
@@ -84,6 +89,7 @@ class EventResource extends Resource
                 Tables\Columns\TextColumn::make('location'),
                 Tables\Columns\IconColumn::make('is_featured')->boolean()->label('Featured'),
                 Tables\Columns\IconColumn::make('is_published')->boolean()->label('Published'),
+                Tables\Columns\TextColumn::make('theme')->toggleable(isToggledHiddenByDefault: true),
             ])
             ->defaultSort('date', 'asc')
             ->actions([

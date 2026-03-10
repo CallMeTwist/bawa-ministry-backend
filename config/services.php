@@ -35,4 +35,8 @@ return [
         ],
     ],
 
+    'church' => [
+        'whatsapp' => env('CHURCH_WHATSAPP', ''),
+        'email'    => env('CHURCH_EMAIL', 'sukaxavier@gmail.com'),
+    ],
 ];

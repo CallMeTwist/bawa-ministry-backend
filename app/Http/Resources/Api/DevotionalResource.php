@@ -14,7 +14,7 @@ class DevotionalResource extends JsonResource
             'title'               => $this->title,
             'slug'                => $this->slug,
             'author'              => $this->author,
-            'scripture_reference' => $this->scripture_reference,
+            'scripture_reference' => $this->scripture_reference ?? [],
             'verse_text'          => $this->verse_text,
             'excerpt'             => $this->excerpt,
             'message'             => $this->message,
@@ -24,6 +24,7 @@ class DevotionalResource extends JsonResource
                 ? asset('storage/' . $this->featured_image)
                 : null,
             'created_at'          => $this->created_at?->toISOString(),
+            'views'               => $this->views,
         ];
     }
 }

@@ -16,6 +16,7 @@ class Event extends Model
         'end_date',
         'time',
         'location',
+        'theme',
         'image',
         'is_published',
         'is_featured',

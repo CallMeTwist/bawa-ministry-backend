@@ -5,45 +5,58 @@ namespace App\Http\Controllers\Api;
 use App\Http\Controllers\Controller;
 use App\Http\Resources\Api\DevotionalResource;
 use App\Models\Devotional;
+use App\Models\DevotionalView;
 use Illuminate\Http\Request;
+use Illuminate\Support\Carbon;
 
 class DevotionalController extends Controller
 {
-    /**
-     * GET /api/devotionals
-     * Returns paginated list of published devotionals (newest first).
-     */
-    public function index(Request $request)
+    public function index()
     {
-        $devotionals = Devotional::published()
-            ->orderByDesc('date')
-            ->paginate($request->integer('per_page', 12));
-
-        return DevotionalResource::collection($devotionals);
+        return DevotionalResource::collection(
+            Devotional::published()
+                ->orderByDesc('date')
+                ->paginate(6)
+        );
     }
 
-    /**
-     * GET /api/devotionals/today
-     * Returns today's devotional if one exists.
-     */
     public function today()
     {
-        $devotional = Devotional::published()->today()->first();
+        $devotional = Devotional::published()->today()->first()
+            ?? Devotional::published()->orderByDesc('date')->first();
 
         if (!$devotional) {
-            return response()->json(['message' => 'No devotional for today.'], 404);
+            return response()->json(['message' => 'No devotional found'], 404);
         }
 
         return new DevotionalResource($devotional);
     }
 
-    /**
-     * GET /api/devotionals/{slug}
-     * Returns a single devotional by slug.
-     */
-    public function show(string $slug)
+    public function show(Request $request, string $slug)
     {
-        $devotional = Devotional::published()->where('slug', $slug)->firstOrFail();
+        $devotional = Devotional::published()
+            ->where('slug', $slug)
+            ->firstOrFail();
+
+        // ── Track the view ─────────────────────────────────────────
+        $ip      = $request->ip();
+        $since   = Carbon::now()->subHours(24);
+
+        $alreadyViewed = DevotionalView::where('devotional_id', $devotional->id)
+            ->where('ip_address', $ip)
+            ->where('viewed_at', '>=', $since)
+            ->exists();
+
+        if (!$alreadyViewed) {
+            DevotionalView::create([
+                'devotional_id' => $devotional->id,
+                'ip_address'    => $ip,
+                'viewed_at'     => Carbon::now(),
+            ]);
+
+            $devotional->increment('views');
+        }
+        // ───────────────────────────────────────────────────────────
 
         return new DevotionalResource($devotional);
     }

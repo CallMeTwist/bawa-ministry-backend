@@ -22,11 +22,13 @@ class Devotional extends Model
         'date',
         'is_published',
         'featured_image',
+        'views',
     ];
 
     protected $casts = [
         'date' => 'date',
         'is_published' => 'boolean',
+        'scripture_reference' => 'array',
     ];
 
     protected static function boot()
@@ -48,5 +50,10 @@ class Devotional extends Model
     public function scopeToday($query)
     {
         return $query->whereDate('date', today());
+    }
+
+    public function viewLogs()
+    {
+        return $this->hasMany(DevotionalView::class);
     }
 }

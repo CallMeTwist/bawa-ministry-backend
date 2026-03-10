@@ -39,9 +39,11 @@ class DevotionalResource extends Resource
                         ->required()
                         ->default(today()),
 
-                    Forms\Components\TextInput::make('scripture_reference')
-                        ->required()
-                        ->placeholder('e.g. John 3:16'),
+                    Forms\Components\TagsInput::make('scripture_reference')
+                        ->label('Scripture References')
+                        ->placeholder('Add a reference e.g. John 3:16')
+                        ->helperText('Press Enter or comma after each reference to add it.')
+                        ->columnSpanFull(),
 
                     Forms\Components\Textarea::make('verse_text')
                         ->required()
@@ -91,6 +93,15 @@ class DevotionalResource extends Resource
                 Tables\Columns\TextColumn::make('scripture_reference'),
                 Tables\Columns\TextColumn::make('date')->date()->sortable(),
                 Tables\Columns\IconColumn::make('is_published')->boolean()->label('Published'),
+                Tables\Columns\TextColumn::make('scripture_reference')
+                    ->label('References')
+                    ->formatStateUsing(fn ($state) => is_array($state) ? implode(', ', $state) : $state)
+                    ->limit(40),
+                Tables\Columns\TextColumn::make('views')
+                    ->label('Views')
+                    ->sortable()
+                    ->icon('heroicon-o-eye')
+                    ->alignCenter(),
             ])
             ->filters([
                 Tables\Filters\TernaryFilter::make('is_published')->label('Published'),
