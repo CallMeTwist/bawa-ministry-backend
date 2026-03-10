@@ -30,6 +30,9 @@ class AdminPanelProvider extends PanelProvider
             ->path('admin')
             ->login()
             ->brandName('Tina Bawa Ministries')
+            ->brandLogo(fn () => view('filament.brand'))
+            ->brandLogoHeight('2.5rem')
+            ->favicon(asset('images/tinalogo.png'))
 
             ->colors([
                 'primary' => Color::hex('#1B2A4A'),
