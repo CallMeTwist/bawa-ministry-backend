@@ -35,4 +35,7 @@ Route::prefix('v1')->group(function () {
     Route::get('/ministries',          [MinistryController::class, 'index']);
     Route::get('/ministries/{slug}',   [MinistryController::class, 'show']);
 
+    //Team Members
+    Route::get('/team', [\App\Http\Controllers\Api\TeamMemberController::class, 'index']);
+
 });
