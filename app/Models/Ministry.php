@@ -13,6 +13,7 @@ class Ministry extends Model
         'name',
         'slug',
         'description',
+        'full_details',
         'image',
         'leader',
         'email',

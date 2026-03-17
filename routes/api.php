@@ -30,7 +30,9 @@ Route::prefix('v1')->group(function () {
 
     // Events
     Route::get('/events',              [EventController::class, 'index']);
+    Route::get('/events/featured', [EventController::class, 'featured']);
     Route::get('/events/{event}',      [EventController::class, 'show']);
+
 
     // Ministries
     Route::get('/ministries',          [MinistryController::class, 'index']);

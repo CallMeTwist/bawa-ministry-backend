@@ -37,6 +37,16 @@ class TeamMemberResource extends Resource
                         ->helperText('Maximum 150 characters.')
                         ->columnSpanFull(),
 
+                    Forms\Components\RichEditor::make('full_info')
+                        ->label('Full Information')
+                        ->helperText('Full rich biography shown on the About page for featured members.')
+                        ->columnSpanFull()
+                        ->toolbarButtons([
+                            'bold', 'italic', 'underline',
+                            'heading', 'bulletList', 'orderedList',
+                            'blockquote', 'link', 'undo', 'redo',
+                        ]),
+
                     Forms\Components\TextInput::make('sort_order')
                         ->numeric()
                         ->default(0),
@@ -46,8 +56,10 @@ class TeamMemberResource extends Resource
                 ->schema([
                     Forms\Components\FileUpload::make('image')
                         ->image()
+                        ->disk('public')
                         ->directory('team')
                         ->imageEditor()
+                        ->visibility('public')
                         ->helperText('Recommended: square image, at least 400×400px.'),
 
                     Forms\Components\Toggle::make('is_published')

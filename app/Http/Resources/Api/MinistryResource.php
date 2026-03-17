@@ -14,6 +14,7 @@ class MinistryResource extends JsonResource
             'name'         => $this->name,
             'slug'         => $this->slug,
             'description'  => $this->description,
+            'full_details' => $this->full_details,
             'leader'       => $this->leader,
             'email'        => $this->email,
             'meeting_time' => $this->meeting_time,

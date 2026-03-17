@@ -18,6 +18,7 @@ class EventController extends Controller
         $events = Event::published()
             ->upcoming()
             ->when($request->category, fn ($q) => $q->where('category', $request->category))
+            ->orderByDesc('date')
             ->paginate($request->integer('per_page', 10));
 
         return EventResource::collection($events);
@@ -31,5 +32,17 @@ class EventController extends Controller
         abort_unless($event->is_published, 404);
 
         return new EventResource($event);
+    }
+
+    public function featured()
+    {
+        return EventResource::collection(
+            Event::published()
+                ->where('is_featured', true)
+                ->upcoming()
+                ->orderByDesc('date')
+                ->limit(4)
+                ->get()
+        );
     }
 }

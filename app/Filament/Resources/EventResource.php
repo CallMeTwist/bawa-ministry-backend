@@ -24,7 +24,6 @@ class EventResource extends Resource
                 ->schema([
                     Forms\Components\TextInput::make('title')
                         ->required(),
-
                     Forms\Components\Select::make('category')
                         ->options([
                             'service'    => 'Service',
@@ -34,31 +33,30 @@ class EventResource extends Resource
                             'prayer'     => 'Prayer',
                             'other'      => 'Other',
                         ]),
-
                     Forms\Components\TextInput::make('theme')
                         ->placeholder('e.g. Walking in the Spirit')
                         ->helperText('Optional theme or scripture focus for the event.')
                         ->columnSpanFull(),
-
                     Forms\Components\DatePicker::make('date')
                         ->required(),
-
                     Forms\Components\DatePicker::make('end_date')
                         ->label('End Date (optional)'),
-
                     Forms\Components\TextInput::make('time')
                         ->placeholder('e.g. 10:00 AM – 12:00 PM'),
-
                     Forms\Components\TextInput::make('location')
                         ->required(),
-
                     Forms\Components\TextInput::make('registration_url')
                         ->label('Registration URL')
-                        ->url(),
-
-                    Forms\Components\Textarea::make('description')
-                        ->rows(5)
+                        ->url()
                         ->columnSpanFull(),
+                    Forms\Components\RichEditor::make('description')
+                        ->required()
+                        ->columnSpanFull()
+                        ->toolbarButtons([
+                            'bold', 'italic', 'underline',
+                            'heading', 'bulletList', 'orderedList',
+                            'blockquote', 'link', 'undo', 'redo',
+                        ]),
                 ])->columns(2),
 
             Forms\Components\Section::make('Media & Publishing')

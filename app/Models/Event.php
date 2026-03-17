@@ -38,6 +38,6 @@ class Event extends Model
 
     public function scopeUpcoming($query)
     {
-        return $query->where('date', '>=', today())->orderBy('date');
+        return $query->where('date', '>=', today());
     }
 }

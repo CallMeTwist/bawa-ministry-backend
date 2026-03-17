@@ -13,6 +13,7 @@ class TeamMember extends Model
         'name',
         'role',
         'bio',
+        'full_info',
         'image',
         'sort_order',
         'is_published',

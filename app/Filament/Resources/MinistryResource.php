@@ -48,6 +48,16 @@ class MinistryResource extends Resource
                         ->rows(5)
                         ->columnSpanFull(),
 
+                    Forms\Components\RichEditor::make('full_details')
+                        ->label('Full Details')
+                        ->helperText('Full rich content shown on the ministry detail page.')
+                        ->columnSpanFull()
+                        ->toolbarButtons([
+                            'bold', 'italic', 'underline',
+                            'heading', 'bulletList', 'orderedList',
+                            'blockquote', 'link', 'undo', 'redo',
+                        ]),
+
                     Forms\Components\TextInput::make('sort_order')
                         ->numeric()
                         ->default(0),

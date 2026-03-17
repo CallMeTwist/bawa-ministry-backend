@@ -14,6 +14,7 @@ class TeamMemberResource extends JsonResource
             'name'       => $this->name,
             'role'       => $this->role,
             'bio'        => $this->bio,
+            'full_info'  => $this->full_info,
             'sort_order' => $this->sort_order,
             'image'      => $this->image
                 ? asset('storage/' . $this->image)
