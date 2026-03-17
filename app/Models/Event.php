@@ -11,6 +11,7 @@ class Event extends Model
 
     protected $fillable = [
         'title',
+        'slug',
         'description',
         'date',
         'end_date',
@@ -23,6 +24,15 @@ class Event extends Model
         'registration_url',
         'category',
     ];
+
+    protected static function booted(): void
+    {
+        static::creating(function ($event) {
+            if (empty($event->slug)) {
+                $event->slug = \Illuminate\Support\Str::slug($event->title) . '-' . uniqid();
+            }
+        });
+    }
 
     protected $casts = [
         'date' => 'date',
@@ -40,4 +50,6 @@ class Event extends Model
     {
         return $query->where('date', '>=', today());
     }
+
+
 }

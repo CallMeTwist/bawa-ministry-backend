@@ -27,8 +27,9 @@ class EventController extends Controller
     /**
      * GET /api/events/{id}
      */
-    public function show(Event $event)
+    public function show(string $slug)
     {
+        $event = Event::published()->where('slug', $slug)->firstOrFail();
         abort_unless($event->is_published, 404);
 
         return new EventResource($event);
