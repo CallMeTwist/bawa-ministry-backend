@@ -19,9 +19,13 @@ return [
 
     'allowed_methods' => ['*'],
 
+//    'allowed_origins' => [
+//        env('FRONTEND_URL', 'http://localhost:8080'),  // Vite dev server
+//        // Add production domain here, e.g. 'https://mychurch.org'
+//    ],
+
     'allowed_origins' => [
-        env('FRONTEND_URL', 'http://localhost:8080'),  // Vite dev server
-        // Add production domain here, e.g. 'https://mychurch.org'
+        '*', // for testing (later restrict to your Vercel domain)
     ],
 
     'allowed_origins_patterns' => [],

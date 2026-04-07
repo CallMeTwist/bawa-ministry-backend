@@ -29,7 +29,17 @@ class Event extends Model
     {
         static::creating(function ($event) {
             if (empty($event->slug)) {
-                $event->slug = \Illuminate\Support\Str::slug($event->title) . '-' . uniqid();
+                $base = \Illuminate\Support\Str::slug($event->title);
+                $slug = $base;
+                $count = 1;
+
+                // keep incrementing until the slug is unique
+                while (static::where('slug', $slug)->exists()) {
+                    $slug = $base . '-' . $count;
+                    $count++;
+                }
+
+                $event->slug = $slug;
             }
         });
     }
