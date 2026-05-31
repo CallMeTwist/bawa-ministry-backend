@@ -74,6 +74,46 @@ class EventResource extends Resource
                         ->label('Featured')
                         ->default(false),
                 ])->columns(2),
+
+            Forms\Components\Section::make('Memories (Post-Event Media)')
+                ->description('Optional photos and YouTube videos shown after the event has happened.')
+                ->collapsed()
+                ->schema([
+                    Forms\Components\Repeater::make('photos')
+                        ->relationship()
+                        ->label('Photos')
+                        ->helperText('Up to 10 photos, max 3 MB each. Drag to reorder.')
+                        ->schema([
+                            Forms\Components\FileUpload::make('path')
+                                ->label('Photo')
+                                ->image()
+                                ->directory('events/photos')
+                                ->maxSize(3072)
+                                ->imageEditor()
+                                ->required(),
+                        ])
+                        ->orderColumn('sort_order')
+                        ->reorderable()
+                        ->maxItems(10)
+                        ->addActionLabel('Add photo')
+                        ->columnSpanFull(),
+
+                    Forms\Components\Repeater::make('video_urls')
+                        ->label('YouTube Video URLs')
+                        ->helperText('Up to 3 YouTube links.')
+                        ->simple(
+                            Forms\Components\TextInput::make('url')
+                                ->url()
+                                ->regex('/^https?:\/\/(www\.)?(youtube\.com\/watch\?v=|youtu\.be\/|youtube\.com\/embed\/)[\w\-]{11}.*$/i')
+                                ->validationMessages([
+                                    'regex' => 'Must be a valid YouTube URL.',
+                                ])
+                                ->required()
+                        )
+                        ->maxItems(3)
+                        ->addActionLabel('Add video')
+                        ->columnSpanFull(),
+                ]),
         ]);
     }
 

@@ -1,5 +1,15 @@
+<IfModule mod_headers.c>
+    <FilesMatch "\.(jpg|jpeg|png|gif|webp|svg)$">
+        Header set Access-Control-Allow-Origin "*"
+    </FilesMatch>
+</IfModule>
+
 <IfModule mod_rewrite.c>
-    RewriteEngine on
-    RewriteCond %{REQUEST_URI} !^public
+    RewriteEngine On
+    
+    # Prevents infinite looping by checking if the request is already in /public
+    RewriteCond %{REQUEST_URI} !^/public/
+    
+    # Routes all traffic to the public directory
     RewriteRule ^(.*)$ public/$1 [L]
 </IfModule>

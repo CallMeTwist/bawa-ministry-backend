@@ -4,6 +4,7 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\HasMany;
 
 class Event extends Model
 {
@@ -23,6 +24,7 @@ class Event extends Model
         'is_featured',
         'registration_url',
         'category',
+        'video_urls',
     ];
 
     protected static function booted(): void
@@ -49,7 +51,26 @@ class Event extends Model
         'end_date' => 'date',
         'is_published' => 'boolean',
         'is_featured' => 'boolean',
+        'video_urls' => 'array',
     ];
+
+    public function photos(): HasMany
+    {
+        return $this->hasMany(EventPhoto::class)->orderBy('sort_order');
+    }
+
+    public static function extractYouTubeId(?string $url): ?string
+    {
+        if (! $url) {
+            return null;
+        }
+        preg_match(
+            '/(?:youtube\.com\/(?:[^\/]+\/.+\/|(?:v|e(?:mbed)?)\/|.*[?&]v=)|youtu\.be\/)([^"&?\/\s]{11})/',
+            $url,
+            $matches
+        );
+        return $matches[1] ?? null;
+    }
 
     public function scopePublished($query)
     {
@@ -58,7 +79,7 @@ class Event extends Model
 
     public function scopeUpcoming($query)
     {
-        return $query->where('date', '>=', today());
+        return $query->where('date', '>=', now()->subDays(7));
     }
 
 

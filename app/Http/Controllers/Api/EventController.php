@@ -16,7 +16,6 @@ class EventController extends Controller
     public function index(Request $request)
     {
         $events = Event::published()
-            ->upcoming()
             ->when($request->category, fn ($q) => $q->where('category', $request->category))
             ->orderByDesc('date')
             ->paginate($request->integer('per_page', 10));
@@ -25,11 +24,14 @@ class EventController extends Controller
     }
 
     /**
-     * GET /api/events/{id}
+     * GET /api/events/{slug}
      */
     public function show(string $slug)
     {
-        $event = Event::published()->where('slug', $slug)->firstOrFail();
+        $event = Event::published()
+            ->with('photos')
+            ->where('slug', $slug)
+            ->firstOrFail();
         abort_unless($event->is_published, 404);
 
         return new EventResource($event);

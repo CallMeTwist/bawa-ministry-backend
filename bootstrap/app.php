@@ -15,6 +15,10 @@ return Application::configure(basePath: dirname(__DIR__))
     ->withMiddleware(function (Middleware $middleware): void {
         $middleware->prepend(HandleCors::class);  // prepend not append
         $middleware->trustProxies(at: '*');
+        $middleware->append([
+            \App\Http\Middleware\SecureHeaders::class,
+            \App\Http\Middleware\HttpRedirect::class,
+        ]);
     })
     ->withExceptions(function (Exceptions $exceptions): void {
         //
