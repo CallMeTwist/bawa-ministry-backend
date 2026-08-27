@@ -83,6 +83,7 @@ class EventResource extends Resource
                         ->relationship()
                         ->label('Photos')
                         ->helperText('Up to 10 photos, max 3 MB each. Drag to reorder.')
+                        ->defaultItems(0)
                         ->schema([
                             Forms\Components\FileUpload::make('path')
                                 ->label('Photo')
@@ -101,6 +102,7 @@ class EventResource extends Resource
                     Forms\Components\Repeater::make('video_urls')
                         ->label('YouTube Video URLs')
                         ->helperText('Up to 3 YouTube links.')
+                        ->defaultItems(0)
                         ->simple(
                             Forms\Components\TextInput::make('url')
                                 ->url()
